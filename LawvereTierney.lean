@@ -10,3 +10,4 @@ import LawvereTierney.SheafForcing
 import LawvereTierney.Logic
 import LawvereTierney.Independence
 import LawvereTierney.Poset
+import LawvereTierney.SubsetTopology
