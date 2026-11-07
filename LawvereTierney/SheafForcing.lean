@@ -14,9 +14,10 @@ public import Mathlib.Order.Sublocale
 # Forcing in the sheaf topos
 
 Fix a Lawvere–Tierney topology `L`. A subpresheaf `A ⊆ F` is *closed* if `L.closure A = A`. These
-are the propositions of the sheaf semantics (when `F` is a sheaf, they are its subsheaves; that
-identification is not carried out here). The closed subpresheaves form a sublocale of the frame of
-all subpresheaves, which has two consequences:
+are the propositions of the sheaf semantics. When `F` is a sheaf they are exactly the subpresheaves
+that are sheaves (`mem_closedSubobjects_iff_isSheaf`); comparing them with the subobjects of `F` in
+the category of sheaves is not carried out here. The closed subpresheaves form a sublocale of the
+frame of all subpresheaves, which has two consequences:
 
 * `⊓`, `⇨` and `∀` of closed subpresheaves are computed as for presheaves (`Subfunctor.forall` is
   closed when its argument is, see `forall_mem_closedSubobjects`);
@@ -34,6 +35,8 @@ corresponding sheaf topos is classical, although that of the presheaf topos is n
 ## Main results
 
 * `LawvereTierneyTopology.mem_closure_iff_exists`: the closure is membership on a covering sieve.
+* `LawvereTierneyTopology.mem_closedSubobjects_iff_isSheaf`: inside a sheaf, the closed
+  subpresheaves are the ones that are sheaves.
 * `LawvereTierneyTopology.coe_sup`, `LawvereTierneyTopology.coe_bot`: joins and `⊥` in the frame of
   closed subpresheaves.
 * `LawvereTierneyTopology.mem_closure_sup_iff`, `LawvereTierneyTopology.mem_closure_bot_iff`,
@@ -85,6 +88,12 @@ theorem mem_iff_exists_of_mem_closedSubobjects {A : Subfunctor F}
     x ∈ A.obj X ↔ ∃ S ∈ L.toGrothendieckTopology X.unop,
       ∀ ⦃Y : C⦄ (f : Y ⟶ X.unop), S f → F.map f.op x ∈ A.obj (op Y) := by
   rw [← L.mem_closure_iff_exists, (L.mem_closedSubobjects_iff.1 hA)]
+
+/-- A subpresheaf of a sheaf is closed exactly when it is itself a sheaf. -/
+theorem mem_closedSubobjects_iff_isSheaf
+    (hF : Presieve.IsSheaf L.toGrothendieckTopology F) {A : Subfunctor F} :
+    A ∈ L.closedSubobjects F ↔ Presieve.IsSheaf L.toGrothendieckTopology A.toFunctor :=
+  L.mem_closedSubobjects_iff.trans (eq_comm.trans (A.eq_sheafify_iff hF))
 
 /-! ### Disjunction, falsity and the existential quantifier -/
 

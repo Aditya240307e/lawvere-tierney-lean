@@ -24,7 +24,7 @@ pullback, and the three equations read `j ⊤ = ⊤`, `j (j S) = j S` and `j (S 
 | --- | --- | --- |
 | Topologies | `Basic`, `Textbook` | Lawvere–Tierney topologies on `Cᵒᵖ ⥤ Type _` and Grothendieck topologies on `C` are isomorphic as ordered sets. The sieve-wise definition is equivalent to the one using `Ω`, `true` and the internal `∧`. |
 | Closure and sheaves | `Closure`, `Sheaf` | `j` acts on subpresheaves, with `χ (closure A) = χ A ≫ j`. Dense subpresheaves are the locally surjective ones. A presheaf is a sheaf iff it has unique extensions along dense subpresheaves. The sieves fixed by `j` form the classifier of the sheaf category. |
-| Forcing | `Heyting`, `Forcing`, `SheafForcing` | Sieves and subpresheaves are Heyting algebras whose operations are the Kripke–Joyal clauses. For a topology `j`, the closed subpresheaves form a sublocale, and `∨`, `⊥`, `∃` hold exactly when they hold on a covering sieve. |
+| Forcing | `Heyting`, `Forcing`, `SheafForcing` | Sieves and subpresheaves are Heyting algebras whose operations are the Kripke–Joyal clauses. For a topology `j`, the closed subpresheaves form a sublocale (inside a sheaf, they are the subpresheaves that are sheaves), and `∨`, `⊥`, `∃` hold exactly when they hold on a covering sieve. |
 | Classical logic | `DoubleNegation`, `Examples` | `j S = Sᶜᶜ` is a Lawvere–Tierney topology whose Grothendieck topology is the dense topology. For it every closed subpresheaf has a complement, although excluded middle fails in the presheaf topos of the chain `0 ≤ 1`. |
 | Propositional logic | `Logic`, `Independence` | Intuitionistic natural deduction is sound in every Heyting algebra. Hence `p ∨ ¬p` and `¬¬p ⇨ p` are not derivable, while `¬¬(p ∨ ¬p)` is. In the `¬¬`-closed subpresheaves, `φ ∨ ¬φ` is true for every valuation. |
 | Posets | `Poset`, `SubsetTopology` | For a preorder `P`, Grothendieck topologies on `P` are nuclei on `LowerSet P`. If `P` is well-founded they are the same as subsets of `P` (order reversed), so a finite poset with `n` elements has `2 ^ n` of them. |
@@ -142,12 +142,14 @@ lemmas around it).
 
 For a Lawvere–Tierney topology `j`, the propositions of the sheaf semantics are the closed
 subpresheaves, those with `closure A = A`. They form a sublocale of the frame of subpresheaves
-(`closedSubobjects`). Joins and `⊥` are the closures of the presheaf ones (`coe_sup`, `coe_bot`),
-`∃` is left adjoint to pullback on closed subpresheaves (`closure_image_le_iff`), and `∀` preserves
-closedness (`forall_mem_closedSubobjects`). Because `x ∈ closure A` says that `x` lies in `A` on a
-covering sieve, the closed-up clauses unwind to the usual local ones: a disjunction holds when it
-holds on a covering sieve, `⊥` holds exactly where the empty sieve covers, and an existential holds
-when witnesses exist on a covering sieve (`mem_closure_sup_iff`, `mem_closure_bot_iff`,
+(`closedSubobjects`), and inside a sheaf they are exactly the subpresheaves that are themselves
+sheaves (`mem_closedSubobjects_iff_isSheaf`, from Mathlib's `Subfunctor.eq_sheafify_iff`). Joins and
+`⊥` are the closures of the presheaf ones (`coe_sup`, `coe_bot`), `∃` is left adjoint to pullback on
+closed subpresheaves (`closure_image_le_iff`), and `∀` preserves closedness
+(`forall_mem_closedSubobjects`). Because `x ∈ closure A` says that `x` lies in `A` on a covering
+sieve, the closed-up clauses unwind to the usual local ones: a disjunction holds when it holds on a
+covering sieve, `⊥` holds exactly where the empty sieve covers, and an existential holds when
+witnesses exist on a covering sieve (`mem_closure_sup_iff`, `mem_closure_bot_iff`,
 `mem_closure_image_iff`).
 
 ### Double negation, and the failure of excluded middle
@@ -221,9 +223,10 @@ directly and not reproved.
 
 ## What is not formalised
 
-* A closed subpresheaf of a sheaf is the same as a subsheaf. This is what would connect
-  `SheafForcing` to the internal logic of the sheaf category, and it is not carried out. That the
-  sheaf category is a topos is in Mathlib and is not repeated here.
+* Closed subpresheaves of a sheaf are shown to be its subpresheaves that are sheaves, but they are
+  not compared with the subobjects of the sheaf in the category of sheaves. So `SheafForcing` is not
+  tied to the internal logic of that category. That the sheaf category is a topos is in Mathlib and
+  is not repeated here.
 * The logic is propositional. Quantifiers appear as adjoints on subpresheaves, but there is no deep
   embedding of first-order logic or dependent type theory, and no completeness theorem.
 * For posets, the statements listed above are all that is proved. In particular the following are
