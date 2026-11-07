@@ -33,8 +33,9 @@ sieve is one that `j` sends to `⊤`, and `j` is recovered as the closure of a s
 ## Main results
 
 * `LawvereTierneyTopology.le_j`: `S ≤ j S` is a consequence of naturality and `j ⊤ = ⊤`.
-* `LawvereTierneyTopology.monotone`: `j` is monotone. In particular the requirement that `j`
-  preserves binary meets could be weakened to monotonicity without changing the notion.
+* `LawvereTierneyTopology.monotone`: `j` is monotone.
+* `LawvereTierneyTopology.ofMonotone`: conversely, monotonicity already implies that `j` preserves
+  binary meets, so it could replace that axiom in the definition.
 
 ## References
 
@@ -74,6 +75,36 @@ theorem ext {L M : LawvereTierneyTopology C} (h : ∀ X S, L.j X S = M.j X S) : 
   have : _ = _ := funext fun X => funext fun S => h X S
   subst this
   rfl
+
+/-- The axiom `j (S ⊓ T) = j S ⊓ j T` follows from monotonicity of `j`, together with the other
+three axioms. -/
+def ofMonotone (j : ∀ X : C, Sieve X → Sieve X)
+    (natural : ∀ {X Y : C} (f : Y ⟶ X) (S : Sieve X), (j X S).pullback f = j Y (S.pullback f))
+    (top : ∀ X : C, j X ⊤ = ⊤) (idem : ∀ (X : C) (S : Sieve X), j X (j X S) = j X S)
+    (mono : ∀ X : C, Monotone (j X)) : LawvereTierneyTopology C where
+  j := j
+  natural := natural
+  top := top
+  idem := idem
+  inf X S T := by
+    have key : ∀ {Y : C} (S' T' : Sieve Y), j Y S' = ⊤ → j Y T' = ⊤ → j Y (S' ⊓ T') = ⊤ := by
+      intro Y S' T' hS hT
+      have h : S' ≤ j Y (S' ⊓ T') := by
+        intro Z g hg
+        rw [Sieve.mem_iff_pullback_eq_top, natural, Sieve.pullback_inter,
+          Sieve.pullback_eq_top_of_mem S' hg, top_inf_eq, ← natural, hT, Sieve.pullback_top]
+      refine top_le_iff.1 ?_
+      calc (⊤ : Sieve Y) = j Y S' := hS.symm
+        _ ≤ j Y (j Y (S' ⊓ T')) := mono Y h
+        _ = j Y (S' ⊓ T') := idem Y _
+    refine le_antisymm (le_inf (mono X inf_le_left) (mono X inf_le_right)) ?_
+    intro Y f hf
+    rw [Sieve.mem_iff_pullback_eq_top, natural, Sieve.pullback_inter]
+    refine key _ _ ?_ ?_
+    · rw [← natural, ← Sieve.mem_iff_pullback_eq_top]
+      exact hf.1
+    · rw [← natural, ← Sieve.mem_iff_pullback_eq_top]
+      exact hf.2
 
 section Basic
 
