@@ -3,10 +3,13 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.Basic
-import Mathlib.CategoryTheory.Topos.Sheaf
-import Mathlib.CategoryTheory.Monoidal.Cartesian.FunctorCategory
-import Mathlib.CategoryTheory.Monoidal.Types.Basic
+
+module
+
+public import LawvereTierney.Basic
+public import Mathlib.CategoryTheory.Topos.Sheaf
+public import Mathlib.CategoryTheory.Monoidal.Cartesian.FunctorCategory
+public import Mathlib.CategoryTheory.Monoidal.Types.Basic
 
 /-!
 # Lawvere–Tierney topologies as endomorphisms of `Ω`
@@ -28,6 +31,8 @@ internal meet `Ω ⊗ Ω ⟶ Ω`. The two definitions are equivalent.
 * `Presheaf.sieveInf_eq_χ`: `sieveInf` is the characteristic map of `⟨truth, truth⟩`, which is
   how `∧` is defined in an arbitrary topos.
 -/
+
+@[expose] public section
 
 universe v u
 
@@ -100,11 +105,6 @@ namespace LawvereTierneyTopology
 
 variable {C}
 
-private theorem congr_app_apply {F G : Cᵒᵖ ⥤ Type (max u v)} {φ ψ : F ⟶ G} (h : φ = ψ)
-    (X : Cᵒᵖ) (x : F.obj X) : φ.app X x = ψ.app X x := by
-  subst h
-  rfl
-
 /-- The three equations hold for `L.hom`. -/
 def toTextbook (L : LawvereTierneyTopology C) : TextbookTopology C where
   j := L.hom
@@ -122,9 +122,9 @@ def toTextbook (L : LawvereTierneyTopology C) : TextbookTopology C where
 def ofTextbook (T : TextbookTopology C) : LawvereTierneyTopology C where
   j X S := T.j.app (Opposite.op X) S
   natural f S := (NatTrans.naturality_apply T.j f.op S).symm
-  top X := congr_app_apply T.truth_comp (Opposite.op X) PUnit.unit
-  idem X S := congr_app_apply T.comp_self (Opposite.op X) S
-  inf X S U := (congr_app_apply T.tensor_comp (Opposite.op X) (S, U)).symm
+  top X := types_congr_hom (NatTrans.congr_app T.truth_comp (Opposite.op X)) PUnit.unit
+  idem X S := types_congr_hom (NatTrans.congr_app T.comp_self (Opposite.op X)) S
+  inf X S U := (types_congr_hom (NatTrans.congr_app T.tensor_comp (Opposite.op X)) (S, U)).symm
 
 @[simp]
 theorem ofTextbook_toTextbook (L : LawvereTierneyTopology C) : ofTextbook L.toTextbook = L :=

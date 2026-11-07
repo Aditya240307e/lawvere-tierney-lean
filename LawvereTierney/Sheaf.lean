@@ -3,10 +3,13 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.Closure
-import Mathlib.CategoryTheory.Sites.LeftExact
-import Mathlib.CategoryTheory.Sites.LocallyBijective
-import Mathlib.CategoryTheory.Sites.Localization
+
+module
+
+public import LawvereTierney.Closure
+public import Mathlib.CategoryTheory.Sites.LeftExact
+public import Mathlib.CategoryTheory.Sites.LocallyBijective
+public import Mathlib.CategoryTheory.Sites.Localization
 
 /-!
 # Sheaves for a Lawvere–Tierney topology
@@ -33,6 +36,8 @@ Throughout, `C` is a small category and presheaves are valued in `Type u`.
 
 * [S. Mac Lane, I. Moerdijk, *Sheaves in Geometry and Logic*][MM92], Chapter V.
 -/
+
+@[expose] public section
 
 universe u
 

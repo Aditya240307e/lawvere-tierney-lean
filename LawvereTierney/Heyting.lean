@@ -3,8 +3,11 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import Mathlib.CategoryTheory.Sites.Sieves.Basic
-import Mathlib.Order.CompleteBooleanAlgebra
+
+module
+
+public import Mathlib.CategoryTheory.Sites.Sieves.Basic
+public import Mathlib.Order.CompleteBooleanAlgebra
 
 /-!
 # Sieves form a frame
@@ -20,6 +23,8 @@ Pulling back along a morphism preserves all of the structure.
 * `Sieve.himp_apply`, `Sieve.compl_apply`: the implication and negation, on arrows.
 * `Sieve.pullback_himp`, `Sieve.pullback_compl`: pullback is a Heyting algebra homomorphism.
 -/
+
+@[expose] public section
 
 universe v u
 

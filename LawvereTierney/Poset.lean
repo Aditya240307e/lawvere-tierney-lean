@@ -3,11 +3,14 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import Mathlib.CategoryTheory.Category.Preorder
-import Mathlib.CategoryTheory.Sites.Grothendieck
-import Mathlib.Order.Nucleus
-import Mathlib.Order.UpperLower.CompleteLattice
-import Mathlib.Order.UpperLower.Principal
+
+module
+
+public import Mathlib.CategoryTheory.Category.Preorder
+public import Mathlib.CategoryTheory.Sites.Grothendieck
+public import Mathlib.Order.Nucleus
+public import Mathlib.Order.UpperLower.CompleteLattice
+public import Mathlib.Order.UpperLower.Principal
 
 /-!
 # Grothendieck topologies on a preorder
@@ -39,6 +42,8 @@ induces on the frame of subterminal objects.
 * A. J. Lindenhovius, *Grothendieck topologies on posets*, arXiv:1405.4408, whose appendix compares
   such topologies with nuclei and sublocales of the frame of down-sets.
 -/
+
+@[expose] public section
 
 universe u
 

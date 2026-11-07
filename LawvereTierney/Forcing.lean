@@ -3,10 +3,13 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.Heyting
-import Mathlib.CategoryTheory.Subfunctor.Image
-import Mathlib.CategoryTheory.Subfunctor.Sieves
-import Mathlib.Order.CompleteBooleanAlgebra
+
+module
+
+public import LawvereTierney.Heyting
+public import Mathlib.CategoryTheory.Subfunctor.Image
+public import Mathlib.CategoryTheory.Subfunctor.Sieves
+public import Mathlib.Order.CompleteBooleanAlgebra
 
 /-!
 # Kripke–Joyal forcing in the presheaf topos
@@ -37,6 +40,8 @@ Lawvere–Tierney topology is in `LawvereTierney.SheafForcing`.
 * `Subfunctor.sieveOfSection_himp`, `Subfunctor.sieveOfSection_compl`: forcing commutes with the
   connectives.
 -/
+
+@[expose] public section
 
 universe w v u
 

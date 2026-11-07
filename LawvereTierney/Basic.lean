@@ -3,8 +3,11 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import Mathlib.CategoryTheory.Sites.Closed
-import Mathlib.Order.Nucleus
+
+module
+
+public import Mathlib.CategoryTheory.Sites.Closed
+public import Mathlib.Order.Nucleus
 
 /-!
 # Lawvere–Tierney topologies on a presheaf topos
@@ -38,6 +41,8 @@ sieve is one that `j` sends to `⊤`, and `j` is recovered as the closure of a s
 * [S. Mac Lane, I. Moerdijk, *Sheaves in Geometry and Logic*][MM92], Chapter V.
 * <https://ncatlab.org/nlab/show/Lawvere-Tierney+topology>
 -/
+
+@[expose] public section
 
 universe v u
 

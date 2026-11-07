@@ -3,10 +3,13 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.Closure
-import LawvereTierney.Poset
-import Mathlib.Topology.Order.UpperLowerSetTopology
-import Mathlib.Topology.Sets.Opens
+
+module
+
+public import LawvereTierney.Closure
+public import LawvereTierney.Poset
+public import Mathlib.Topology.Order.UpperLowerSetTopology
+public import Mathlib.Topology.Sets.Opens
 
 /-!
 # Subtoposes of a presheaf topos on a preorder, and the Alexandrov space
@@ -32,6 +35,8 @@ nuclei on `Opens P`, that is with sublocales of the Alexandrov space.
 * `CategoryTheory.LawvereTierneyTopology.closure_lowerSetOrderIsoSubterminal`: closure of a
   subobject of `1` for the Lawvere–Tierney topology of `J` is the nucleus of `J` on lower sets.
 -/
+
+@[expose] public section
 
 universe u
 

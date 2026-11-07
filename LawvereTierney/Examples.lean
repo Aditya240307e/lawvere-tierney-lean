@@ -3,8 +3,11 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.DoubleNegation
-import Mathlib.Order.Fin.Basic
+
+module
+
+public import LawvereTierney.DoubleNegation
+public import Mathlib.Order.Fin.Basic
 
 /-!
 # The presheaf topos of the two-element chain
@@ -21,6 +24,8 @@ a covering sieve, so excluded middle is restored on passing to sheaves
 * `LawvereTierneyTopology.Examples.twoChainSieve_mem_dense`: but `twoChainSieve` covers `1` for the
   dense topology.
 -/
+
+@[expose] public section
 
 namespace CategoryTheory
 

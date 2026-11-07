@@ -3,9 +3,12 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.DoubleNegation
-import LawvereTierney.Forcing
-import Mathlib.Order.Sublocale
+
+module
+
+public import LawvereTierney.DoubleNegation
+public import LawvereTierney.Forcing
+public import Mathlib.Order.Sublocale
 
 /-!
 # Forcing in the sheaf topos
@@ -45,6 +48,8 @@ corresponding sheaf topos is classical, although that of the presheaf topos is n
 
 * [S. Mac Lane, I. Moerdijk, *Sheaves in Geometry and Logic*][MM92], Chapter VI.
 -/
+
+@[expose] public section
 
 universe w v u
 

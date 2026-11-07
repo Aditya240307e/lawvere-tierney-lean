@@ -3,11 +3,14 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.Forcing
-import LawvereTierney.Textbook
-import Mathlib.CategoryTheory.Sites.LocallySurjective
-import Mathlib.CategoryTheory.Sites.Subsheaf
-import Mathlib.CategoryTheory.Subfunctor.Image
+
+module
+
+public import LawvereTierney.Forcing
+public import LawvereTierney.Textbook
+public import Mathlib.CategoryTheory.Sites.LocallySurjective
+public import Mathlib.CategoryTheory.Sites.Subsheaf
+public import Mathlib.CategoryTheory.Subfunctor.Image
 
 /-!
 # Closure of subpresheaves
@@ -38,6 +41,8 @@ here with the Grothendieck topology of `j`.
 
 * [S. Mac Lane, I. Moerdijk, *Sheaves in Geometry and Logic*][MM92], Chapter V.
 -/
+
+@[expose] public section
 
 universe w v u
 

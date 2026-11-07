@@ -3,8 +3,11 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import Mathlib.Order.Heyting.Basic
-import Mathlib.Data.Set.Insert
+
+module
+
+public import Mathlib.Order.Heyting.Basic
+public import Mathlib.Data.Set.Insert
 
 /-!
 # Intuitionistic propositional logic and its Heyting algebra semantics
@@ -31,6 +34,8 @@ fails is a proof that it cannot be derived (see `LawvereTierney.Independence`).
 * `IPC.Derives.eval_eq_top`: a formula derivable from no hypotheses has value `⊤`.
 * `IPC.derives_compl_compl_lem`: `¬¬(φ ∨ ¬φ)` is derivable.
 -/
+
+@[expose] public section
 
 universe u v
 

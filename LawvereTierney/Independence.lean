@@ -3,9 +3,12 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.Examples
-import LawvereTierney.Logic
-import LawvereTierney.SheafForcing
+
+module
+
+public import LawvereTierney.Examples
+public import LawvereTierney.Logic
+public import LawvereTierney.SheafForcing
 
 /-!
 # Classical principles in the internal logic
@@ -23,6 +26,8 @@ excluded middle holds for every valuation.
 * `IPC.eval_lem_doubleNegation`: `φ ∨ ¬φ` has value `⊤` under every valuation in the closed
   subpresheaves for the double negation topology.
 -/
+
+@[expose] public section
 
 universe w v u
 

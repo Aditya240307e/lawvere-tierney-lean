@@ -3,8 +3,11 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.Poset
-import Mathlib.Data.Fintype.Powerset
+
+module
+
+public import LawvereTierney.Poset
+public import Mathlib.Data.Fintype.Powerset
 
 /-!
 # Subset topologies on a well-founded poset
@@ -39,6 +42,8 @@ In particular a finite poset with `n` elements has exactly `2 ^ n` Grothendieck 
   (every nonempty subset has a minimal element), which is `WellFoundedLT` here.
 * J. Hemelaer, *Grothendieck topologies on posets*, arXiv:1811.10039, for the general case.
 -/
+
+@[expose] public section
 
 universe u
 

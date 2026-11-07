@@ -3,9 +3,12 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
-import LawvereTierney.Closure
-import LawvereTierney.Heyting
-import Mathlib.Order.Heyting.Regular
+
+module
+
+public import LawvereTierney.Closure
+public import LawvereTierney.Heyting
+public import Mathlib.Order.Heyting.Regular
 
 /-!
 # The double negation topology
@@ -34,6 +37,8 @@ middle therefore holds, even though it fails in the presheaf topos in general
 
 * [S. Mac Lane, I. Moerdijk, *Sheaves in Geometry and Logic*][MM92], Chapter VI.
 -/
+
+@[expose] public section
 
 universe v u
 
