@@ -26,8 +26,8 @@ pullback, and the three equations read `j ⊤ = ⊤`, `j (j S) = j S` and `j (S 
 | Closure and sheaves | `Closure`, `Sheaf` | `j` acts on subpresheaves, with `χ (closure A) = χ A ≫ j`. Dense subpresheaves are the locally surjective ones. A presheaf is a sheaf iff it has unique extensions along dense subpresheaves. The sieves fixed by `j` form the classifier of the sheaf category. |
 | Forcing | `Heyting`, `Forcing`, `SheafForcing` | Sieves and subpresheaves are Heyting algebras whose operations are the Kripke–Joyal clauses. For a topology `j`, the closed subpresheaves form a sublocale (inside a sheaf, they are the subpresheaves that are sheaves), and `∨`, `⊥`, `∃` hold exactly when they hold on a covering sieve. |
 | Classical logic | `DoubleNegation`, `Examples` | `j S = Sᶜᶜ` is a Lawvere–Tierney topology whose Grothendieck topology is the dense topology. For it every closed subpresheaf has a complement, although excluded middle fails in the presheaf topos of the chain `0 ≤ 1`. |
-| Propositional logic | `Logic`, `Independence` | Intuitionistic natural deduction is sound in every Heyting algebra. Hence `p ∨ ¬p` and `¬¬p ⇨ p` are not derivable, while `¬¬(p ∨ ¬p)` is. In the `¬¬`-closed subpresheaves, `φ ∨ ¬φ` is true for every valuation. |
-| Posets | `Poset`, `SubsetTopology` | For a preorder `P`, Grothendieck topologies on `P` are nuclei on `LowerSet P`. If `P` is well-founded they are the same as subsets of `P` (order reversed), so a finite poset with `n` elements has `2 ^ n` of them. |
+| Propositional logic | `Logic`, `Independence`, `Completeness` | Intuitionistic natural deduction is sound and complete for Heyting algebras: a formula is derivable iff it is `⊤` under every valuation in every Heyting algebra, completeness coming from the Lindenbaum algebra. Hence `p ∨ ¬p` and `¬¬p ⇨ p` are not derivable, while `¬¬(p ∨ ¬p)` is. In the `¬¬`-closed subpresheaves, `φ ∨ ¬φ` is true for every valuation. |
+| Posets | `Poset`, `SubsetTopology` | For a preorder `P`, Grothendieck topologies on `P` are nuclei on `LowerSet P`. A poset is well-founded iff every topology on it comes from a subset. In that case topologies are the same as subsets of `P` (order reversed), so a finite poset with `n` elements has `2 ^ n` of them. Otherwise some topology comes from no subset. |
 | Alexandrov spaces | `Alexandrov` | Lower sets are the subobjects of the terminal presheaf and the open sets of the Alexandrov topology. On them the Lawvere–Tierney topology of `J` acts as the nucleus of `J`, so topologies on `P` are nuclei on `Opens P`. |
 
 ## Headline statements
@@ -72,11 +72,15 @@ theorem LawvereTierneyTopology.doubleNegation_toGrothendieckTopology :
 theorem LawvereTierneyTopology.isCompl_compl_doubleNegation
     (A : (doubleNegation C).closedSubobjects F) : IsCompl A Aᶜ
 
--- Logic and Independence
+-- Logic, Independence and Completeness
 theorem IPC.Derives.sound (d : Derives Γ φ) :
     ∀ h : H, (∀ γ ∈ Γ, h ≤ eval v γ) → h ≤ eval v φ
 
 theorem IPC.not_derives_lem : ¬ Derives ∅ lem
+
+theorem IPC.derives_iff_forall_eval_eq_top :
+    Derives Γ φ ↔ ∀ (H : Type u) [HeytingAlgebra H] (v : α → H),
+      (∀ γ ∈ Γ, eval v γ = ⊤) → eval v φ = ⊤
 
 -- Poset, SubsetTopology and Alexandrov
 def GrothendieckTopology.orderIsoNucleus (P : Type u) [Preorder P] :
@@ -84,6 +88,9 @@ def GrothendieckTopology.orderIsoNucleus (P : Type u) [Preorder P] :
 
 def GrothendieckTopology.orderIsoSubset (P : Type u) [PartialOrder P] [WellFoundedLT P] :
     (Set P)ᵒᵈ ≃o GrothendieckTopology P
+
+theorem GrothendieckTopology.wellFoundedLT_iff_forall_eq_ofSubset [PartialOrder P] :
+    WellFoundedLT P ↔ ∀ J : GrothendieckTopology P, ∃ X, J = ofSubset X
 
 theorem GrothendieckTopology.card_eq_two_pow [PartialOrder P] [Fintype P]
     [Fintype (GrothendieckTopology P)] :
@@ -178,6 +185,20 @@ that neither `p ∨ ¬p` nor `¬¬p ⇨ p` is derivable (`not_derives_lem`,
 (`derives_compl_compl_lem`), and on sieves it is the statement `sup_compl_mem_dense`. In the
 `¬¬`-closed subpresheaves, `φ ∨ ¬φ` has value `⊤` under every valuation (`eval_lem_doubleNegation`).
 
+Conversely, if `Γ` does not derive `φ`, some Heyting algebra separates them. Order the formulas by
+`φ ≤ ψ` when `Derives (insert φ Γ) ψ`, which needs weakening and cut (`Derives.mono`,
+`Derives.cut`), and identify formulas that are below each other. This is Mathlib's
+`Antisymmetrization` of the preorder `Entailment Γ`, called `Lindenbaum Γ`. Each connective is a
+lattice operation of the quotient because the natural deduction rules give the universal
+properties of `⊔`, `⊓`, `⊤`, `⊥` and `⇨` (`Entailment.le_himp_iff` is the deduction theorem), and a
+connective is well defined on classes because it is monotone in the right sense. The valuation
+`a ↦ [a]` evaluates every formula to its own class (`Lindenbaum.eval_mk`) and a class is `⊤`
+exactly when its formula is derivable (`Lindenbaum.mk_eq_top_iff`). Together with soundness this
+is `derives_iff_forall_eval_eq_top`, and for no hypotheses `derives_empty_iff`: a formula is
+derivable iff it is `⊤` in every Heyting algebra. This is completeness for the algebraic
+semantics. Completeness for Kripke models, that is for lower sets of posets, is a stronger
+statement and is not formalised.
+
 ### Posets
 
 For a preorder `P`, a sieve on `p` is a lower set contained in `Iic p`, so a lower set `U` gives a
@@ -195,9 +216,19 @@ points `p` whose sieve of strict predecessors is not covering (`eq_ofSubset_unco
 pullback to `q` would lie inside the strict predecessors of `q`, which would then cover, contrary to
 `q ∈ X`. The other is well-founded induction on `p` using transitivity. Counting subsets gives
 `2 ^ n` topologies on an `n`-element poset (`card_eq_two_pow`). The well-founded case is Theorem
-2.12 of Lindenhovius (for Artinian posets), and the comparison with nuclei is in his Appendix B. The
-converse of the theorem, that a poset which is not well-founded has topologies not of this form, is
-not formalised.
+2.12 of Lindenhovius (for Artinian posets), and the comparison with nuclei is in his Appendix B.
+
+The converse of that theorem is formalised too. Suppose `X` is nonempty and every point of `X` has a
+smaller point in `X`, as happens in any poset that is not well-founded. Let `meeting X` consist of
+the sieves `S` on `p` such that for every `q ≤ p` above a point of `X`, `S` contains a point of `X`
+below `q`. This is a topology (`meeting`). Since points of `X` have smaller points in `X`, the
+strict predecessors of every `p` cover (`strict_mem_meeting`). If `meeting X` were `ofSubset Y`
+then no `p` could lie in `Y`, because the strict predecessors of `p` cover for `ofSubset Y` only
+when `p ∉ Y`, so `Y = ∅`. But `ofSubset ∅` makes the empty sieve cover every point, whereas for
+`meeting X` the empty sieve does not cover a point of `X` (`meeting_ne_ofSubset`). Hence a poset is
+well-founded exactly when all its topologies are subset topologies
+(`wellFoundedLT_iff_forall_eq_ofSubset`). For the integers, `X = ℤ` works
+(`exists_forall_ne_ofSubset_int`).
 
 ### Alexandrov spaces
 
@@ -219,7 +250,8 @@ matches Lawvere–Tierney topologies, but at the Mathlib commit used here there 
 Lawvere–Tierney topology. This repository adds that definition, the correspondence with Grothendieck
 topologies and its textbook form, the statements about closure, density and sheaves, the forcing and
 logic layers, and the results on posets and Alexandrov spaces. The Mathlib material above is used
-directly and not reproved.
+directly and not reproved. Mathlib has no Lindenbaum algebra, so the one in `Completeness` is built
+from `Antisymmetrization`.
 
 ## What is not formalised
 
@@ -228,11 +260,13 @@ directly and not reproved.
   tied to the internal logic of that category. That the sheaf category is a topos is in Mathlib and
   is not repeated here.
 * The logic is propositional. Quantifiers appear as adjoints on subpresheaves, but there is no deep
-  embedding of first-order logic or dependent type theory, and no completeness theorem.
+  embedding of first-order logic or dependent type theory. Completeness is proved for Heyting
+  algebras, not for Kripke models: representing a Heyting algebra as lower sets of a poset by prime
+  filters, which would show that presheaf toposes on posets already detect every non-theorem, is
+  not done.
 * For posets, the statements listed above are all that is proved. In particular the following are
-  not formalised: that subtoposes of the presheaf topos on `P` correspond to topologies, that
-  sheaves on the Alexandrov space are presheaves on `P` (the comparison lemma), and the converse of
-  Lindenhovius's theorem.
+  not formalised: that subtoposes of the presheaf topos on `P` correspond to topologies, and that
+  sheaves on the Alexandrov space are presheaves on `P` (the comparison lemma).
 
 ## Building
 
@@ -264,8 +298,9 @@ LawvereTierney/
   SheafForcing.lean            closed subpresheaves, and forcing in the sheaf semantics
   Logic.lean                   intuitionistic propositional calculus and its semantics
   Independence.lean            what is not derivable, and what is valid in ¬¬-sheaves
+  Completeness.lean            derivable means true in every Heyting algebra (Lindenbaum algebra)
   Poset.lean                   topologies on a preorder are nuclei on its lower sets
-  SubsetTopology.lean          topologies on a well-founded poset are subsets
+  SubsetTopology.lean          topologies are subsets exactly when the poset is well-founded
   Alexandrov.lean              the same, on the opens of the Alexandrov space
 docs/references.bib            the bibliography cited in the docstrings
 ```
