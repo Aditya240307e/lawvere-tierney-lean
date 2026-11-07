@@ -11,6 +11,7 @@ public import LawvereTierney.Examples
 public import LawvereTierney.SheafForcing
 public import LawvereTierney.Logic
 public import LawvereTierney.Independence
+public import LawvereTierney.Completeness
 public import LawvereTierney.Poset
 public import LawvereTierney.SubsetTopology
 public import LawvereTierney.Alexandrov

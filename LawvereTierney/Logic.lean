@@ -20,7 +20,8 @@ A valuation of the atoms in a Heyting algebra `H` extends to all formulas (`IPC.
 Kripke–Joyal semantics of a topos is of this form: `H` is the Heyting algebra of sieves at one
 stage, or the frame of subobjects of an object. Soundness says that a derivable formula is true
 under every valuation in every Heyting algebra, so a single Heyting algebra in which a formula
-fails is a proof that it cannot be derived (see `LawvereTierney.Independence`).
+fails is a proof that it cannot be derived (see `LawvereTierney.Independence`). The converse is
+proved in `LawvereTierney.Completeness`.
 
 ## Main definitions
 
