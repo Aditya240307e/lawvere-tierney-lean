@@ -1,2 +1,3 @@
 import LawvereTierney.Basic
 import LawvereTierney.Heyting
+import LawvereTierney.Textbook
