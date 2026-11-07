@@ -127,6 +127,11 @@ theorem ofGrothendieckTopology_toGrothendieckTopology (L : LawvereTierneyTopolog
     ofGrothendieckTopology L.toGrothendieckTopology = L :=
   ext fun X S => topologyOfClosureOperator_close _ _ X S
 
+theorem close_toGrothendieckTopology (L : LawvereTierneyTopology C) {X : C} (S : Sieve X) :
+    L.toGrothendieckTopology.close S = L.j X S :=
+  congrArg (fun M : LawvereTierneyTopology C => M.j X S)
+    (ofGrothendieckTopology_toGrothendieckTopology L)
+
 variable (C) in
 /-- Grothendieck topologies on `C` correspond to Lawvere–Tierney topologies on `Cᵒᵖ ⥤ Type _`. -/
 def equivGrothendieckTopology : GrothendieckTopology C ≃ LawvereTierneyTopology C where
