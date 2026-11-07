@@ -37,10 +37,12 @@ In particular a finite poset with `n` elements has exactly `2 ^ n` Grothendieck 
 
 ## References
 
-* A. J. Lindenhovius, *Grothendieck topologies on posets*, arXiv:1405.4408. There the subset
-  topologies are classified, and shown to be all topologies exactly when the poset is Artinian
-  (every nonempty subset has a minimal element), which is `WellFoundedLT` here.
-* J. Hemelaer, *Grothendieck topologies on posets*, arXiv:1811.10039, for the general case.
+* [A. J. Lindenhovius, *Grothendieck topologies on posets*][Lindenhovius14]. There the subset
+  topologies are introduced (Proposition 2.8) and shown to be all topologies exactly when the
+  poset is Artinian (Theorem 2.12), that is, when every nonempty subset has a minimal element.
+  This is `WellFoundedLT` here.
+* [J. Hemelaer, *Grothendieck topologies on posets*][Hemelaer18], for posets that are not
+  Artinian.
 -/
 
 @[expose] public section

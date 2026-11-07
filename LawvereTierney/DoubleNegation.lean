@@ -35,7 +35,7 @@ middle therefore holds, even though it fails in the presheaf topos in general
 
 ## References
 
-* [S. Mac Lane, I. Moerdijk, *Sheaves in Geometry and Logic*][MM92], Chapter VI.
+* [S. Mac Lane, I. Moerdijk, *Sheaves in Geometry and Logic*][MM92], Chapters V and VI.
 -/
 
 @[expose] public section

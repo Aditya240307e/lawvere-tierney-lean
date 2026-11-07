@@ -39,8 +39,8 @@ induces on the frame of subterminal objects.
 ## References
 
 * [S. Mac Lane, I. Moerdijk, *Sheaves in Geometry and Logic*][MM92], Chapter III.
-* A. J. Lindenhovius, *Grothendieck topologies on posets*, arXiv:1405.4408, whose appendix compares
-  such topologies with nuclei and sublocales of the frame of down-sets.
+* [A. J. Lindenhovius, *Grothendieck topologies on posets*][Lindenhovius14], whose Appendix B
+  compares such topologies with nuclei and sublocales of the frame of down-sets.
 -/
 
 @[expose] public section
