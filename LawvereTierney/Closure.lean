@@ -3,6 +3,7 @@ Copyright (c) 2026 Aditya Ekbote. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Aditya Ekbote
 -/
+import LawvereTierney.Forcing
 import LawvereTierney.Textbook
 import Mathlib.CategoryTheory.Sites.LocallySurjective
 import Mathlib.CategoryTheory.Sites.Subsheaf
@@ -61,25 +62,13 @@ theorem mem_closure_iff {X : Cᵒᵖ} {x : F.obj X} :
     x ∈ (L.closure A).obj X ↔ L.j X.unop (A.sieveOfSection x) = ⊤ :=
   Iff.rfl
 
-theorem sieveOfSection_map {X Y : C} (f : Y ⟶ X) (x : F.obj (op X)) :
-    A.sieveOfSection (F.map f.op x) = (A.sieveOfSection x).pullback f :=
-  Sieve.ext fun Z g => by simp [Subfunctor.sieveOfSection]
-
-theorem sieveOfSection_eq_top_iff {X : Cᵒᵖ} {x : F.obj X} :
-    A.sieveOfSection x = ⊤ ↔ x ∈ A.obj X := by
-  rw [← Sieve.id_mem_iff_eq_top]
-  simp [Subfunctor.sieveOfSection]
-
-theorem sieveOfSection_inf {X : Cᵒᵖ} (B : Subfunctor F) (x : F.obj X) :
-    (A ⊓ B).sieveOfSection x = A.sieveOfSection x ⊓ B.sieveOfSection x :=
-  rfl
-
 /-- The sieve of a section of the closure is the closure of its sieve in `A`. -/
 theorem sieveOfSection_closure {X : Cᵒᵖ} (x : F.obj X) :
     (L.closure A).sieveOfSection x = L.j X.unop (A.sieveOfSection x) := by
   refine Sieve.ext fun Y f => ?_
   change F.map f.op x ∈ (L.closure A).obj (op Y) ↔ _
-  rw [mem_closure_iff, sieveOfSection_map, ← L.natural, ← Sieve.mem_iff_pullback_eq_top]
+  rw [mem_closure_iff, Subfunctor.sieveOfSection_map, ← L.natural,
+    ← Sieve.mem_iff_pullback_eq_top]
 
 theorem le_closure : A ≤ L.closure A :=
   Subfunctor.le_sheafify _ A
@@ -97,7 +86,7 @@ theorem closure_closure : L.closure (L.closure A) = L.closure A := by
 theorem closure_inf (B : Subfunctor F) : L.closure (A ⊓ B) = L.closure A ⊓ L.closure B := by
   refine Subfunctor.ext (funext fun X => Set.ext fun x => ?_)
   change _ ↔ _ ∧ _
-  simp only [mem_closure_iff, sieveOfSection_inf, L.inf, inf_eq_top_iff]
+  simp only [mem_closure_iff, Subfunctor.sieveOfSection_inf, L.inf, inf_eq_top_iff]
 
 variable (F) in
 /-- Closure is a nucleus on the lattice of subpresheaves of `F`. -/

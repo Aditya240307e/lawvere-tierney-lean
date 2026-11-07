@@ -1,5 +1,6 @@
 import LawvereTierney.Basic
 import LawvereTierney.Heyting
 import LawvereTierney.Textbook
+import LawvereTierney.Forcing
 import LawvereTierney.Closure
 import LawvereTierney.Sheaf
