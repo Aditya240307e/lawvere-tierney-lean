@@ -10,7 +10,7 @@ public import LawvereTierney.Poset
 public import Mathlib.Data.Fintype.Powerset
 
 /-!
-# Subset topologies on a well-founded poset
+# Subset topologies on a poset
 
 For a subset `X` of a preorder `P` there is a Grothendieck topology `ofSubset X` in which a sieve
 on `p` is covering when it contains every element of `X` below `p`. Larger subsets give coarser
@@ -21,17 +21,26 @@ subset: the points `p` for which the sieve of strict predecessors of `p` is not 
 that such a topology contains `ofSubset X` is by well-founded induction, using transitivity.
 In particular a finite poset with `n` elements has exactly `2 ^ n` Grothendieck topologies.
 
+Well-foundedness is also necessary. If `P` has a nonempty subset `X` without minimal elements, the
+topology `meeting X`, in which a sieve covers `p` when it meets `X` below every `q ≤ p` that lies
+above a point of `X`, is not a subset topology: all strict predecessor sieves cover for it, which
+would force the subset to be empty, but the empty sieve does not cover a point of `X`.
+
 ## Main definitions
 
 * `CategoryTheory.GrothendieckTopology.ofSubset`: the topology of a subset.
 * `CategoryTheory.GrothendieckTopology.uncovered`: the subset recovered from a topology.
 * `CategoryTheory.GrothendieckTopology.orderIsoSubset`: topologies on a well-founded poset are
   subsets, with the order reversed.
+* `CategoryTheory.GrothendieckTopology.meeting`: a topology that is not a subset topology when the
+  subset has no minimal element.
 
 ## Main results
 
 * `CategoryTheory.GrothendieckTopology.eq_ofSubset_uncovered`: on a well-founded preorder every
   topology is a subset topology.
+* `CategoryTheory.GrothendieckTopology.wellFoundedLT_iff_forall_eq_ofSubset`: a poset is
+  well-founded exactly when all of its topologies are subset topologies.
 * `CategoryTheory.GrothendieckTopology.card_eq_two_pow`: the number of topologies on a finite
   poset.
 
@@ -120,6 +129,26 @@ theorem eq_ofSubset_uncovered [WellFoundedLT P] (J : GrothendieckTopology P) :
     J = ofSubset J.uncovered :=
   le_antisymm (le_ofSubset_uncovered J) (ofSubset_uncovered_le J)
 
+/-- The topology in which a sieve on `p` covers when, below every `q ≤ p` that lies above a point of
+`X`, it contains a point of `X`. -/
+def meeting (X : Set P) : GrothendieckTopology P where
+  sieves p := {S | ∀ ⦃q⦄ (h : q ≤ p), (∃ x ∈ X, x ≤ q) →
+    ∃ x ∈ X, ∃ hx : x ≤ q, S (homOfLE (hx.trans h))}
+  top_mem' _ := fun _ _ ⟨x, hx, hxq⟩ => ⟨x, hx, hxq, True.intro⟩
+  pullback_stable' _ _ _ f hS := fun _ h hq => hS (h.trans (leOfHom f)) hq
+  transitive' _ _ hS _ hR := fun q h hq => by
+    obtain ⟨x, hx, hxq, hxS⟩ := hS h hq
+    obtain ⟨y, hy, hyx, hyR⟩ := hR hxS le_rfl ⟨x, hx, le_rfl⟩
+    exact ⟨y, hy, hyx.trans hxq, hyR⟩
+
+/-- If every point of `X` has a smaller point in `X`, the strict predecessors of any `p` cover
+for `meeting X`. -/
+theorem strict_mem_meeting {X : Set P} (hX : ∀ x ∈ X, ∃ y ∈ X, y < x) (p : P) :
+    Sieve.strict p ∈ meeting X p := by
+  rintro q h ⟨x, hx, hxq⟩
+  obtain ⟨y, hy, hyx⟩ := hX x hx
+  exact ⟨y, hy, (hyx.trans_le hxq).le, hyx.trans_le (hxq.trans h)⟩
+
 end GrothendieckTopology
 
 end Preorder
@@ -154,6 +183,38 @@ def orderIsoSubset [WellFoundedLT P] : (Set P)ᵒᵈ ≃o GrothendieckTopology P
   left_inv X := by simp
   right_inv J := (eq_ofSubset_uncovered J).symm
   map_rel_iff' := ofSubset_le_ofSubset_iff
+
+/-- If `X` is nonempty and has no minimal element, `meeting X` is not a subset topology. -/
+theorem meeting_ne_ofSubset {X : Set P} (hne : X.Nonempty) (hX : ∀ x ∈ X, ∃ y ∈ X, y < x)
+    (Y : Set P) : meeting X ≠ ofSubset Y := by
+  intro h
+  have hY : Y = ∅ := Set.eq_empty_of_forall_notMem fun p hp => by
+    have := strict_mem_meeting hX p
+    rw [h, strict_mem_ofSubset_iff] at this
+    exact this hp
+  obtain ⟨p, hp⟩ := hne
+  have hbot : (⊥ : Sieve p) ∈ meeting X p := by
+    rw [h, hY]
+    exact fun q _ hq => hq.elim
+  obtain ⟨x, -, hx, hxbot⟩ := hbot le_rfl ⟨p, hp, le_rfl⟩
+  exact hxbot
+
+/-- Every Grothendieck topology on a poset is a subset topology exactly when the poset is
+well-founded. -/
+theorem wellFoundedLT_iff_forall_eq_ofSubset :
+    WellFoundedLT P ↔ ∀ J : GrothendieckTopology P, ∃ X, J = ofSubset X := by
+  refine ⟨fun _ J => ⟨_, eq_ofSubset_uncovered J⟩, fun h => ?_⟩
+  by_contra hwf
+  rw [WellFoundedLT, WellFounded.wellFounded_iff_has_min] at hwf
+  push Not at hwf
+  obtain ⟨X, hne, hX⟩ := hwf
+  obtain ⟨Y, hY⟩ := h (meeting X)
+  exact meeting_ne_ofSubset hne hX Y hY
+
+/-- The integers carry a Grothendieck topology that is not a subset topology. -/
+theorem exists_forall_ne_ofSubset_int : ∃ J : GrothendieckTopology ℤ, ∀ X, J ≠ ofSubset X :=
+  ⟨meeting Set.univ,
+    meeting_ne_ofSubset Set.univ_nonempty fun x _ => ⟨x - 1, Set.mem_univ _, by omega⟩⟩
 
 /-- A finite poset with `n` elements has `2 ^ n` Grothendieck topologies. -/
 theorem card_eq_two_pow [Fintype P] [Fintype (GrothendieckTopology P)] :
