@@ -8,3 +8,4 @@ import LawvereTierney.DoubleNegation
 import LawvereTierney.Examples
 import LawvereTierney.SheafForcing
 import LawvereTierney.Logic
+import LawvereTierney.Independence
