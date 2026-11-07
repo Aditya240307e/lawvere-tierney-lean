@@ -7,3 +7,4 @@ import LawvereTierney.Sheaf
 import LawvereTierney.DoubleNegation
 import LawvereTierney.Examples
 import LawvereTierney.SheafForcing
+import LawvereTierney.Logic
