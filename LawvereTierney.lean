@@ -4,3 +4,4 @@ import LawvereTierney.Textbook
 import LawvereTierney.Forcing
 import LawvereTierney.Closure
 import LawvereTierney.Sheaf
+import LawvereTierney.DoubleNegation
